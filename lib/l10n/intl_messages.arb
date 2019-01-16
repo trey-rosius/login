@@ -1,0 +1,93 @@
+{
+  "@@last_modified": "2019-01-09T15:08:35.999308",
+  "appName": "Cori",
+  "@appName": {
+    "description": "Title for the ecommerce application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gLogin": "Log In With Google",
+  "@gLogin": {
+    "description": "google login",
+    "type": "text",
+    "placeholders": {}
+  },
+  "fLogin": "Log In With Facebook",
+  "@fLogin": {
+    "description": "facebook login",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "loading",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterEmail": "Please Enter Email",
+  "@enterEmail": {
+    "description": "Email Required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterPassword": "Please Enter Password",
+  "@enterPassword": {
+    "description": "Password Required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email Required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password Required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "forgotPassword": "Forgot Password ?",
+  "@forgotPassword": {
+    "description": "When User Forgets their Password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign In User with email and password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createAccount": "Create New Account",
+  "@createAccount": {
+    "description": "Create new Account",
+    "type": "text",
+    "placeholders": {}
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Register",
+    "type": "text",
+    "placeholders": {}
+  },
+  "already": "Already Have An Account ?",
+  "@already": {
+    "description": "When the user already has an account",
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "Log In",
+  "@login": {
+    "description": "Go to Log In Screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorOccured": "An Error Occured, Please Try Again Later",
+  "@errorOccured": {
+    "description": "Go to Log In Screen",
+    "type": "text",
+    "placeholders": {}
+  }
+}

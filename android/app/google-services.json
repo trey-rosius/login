@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "598699684568",
+    "firebase_url": "https://cori-b6795.firebaseio.com",
+    "project_id": "cori-b6795",
+    "storage_bucket": "cori-b6795.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598699684568:android:d5bf2ed5286a127d",
+        "android_client_info": {
+          "package_name": "com.leonel.cori"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598699684568-mijfkparcsd7hfm1u20mvtoidkdt5sp1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leonel.cori",
+            "certificate_hash": "15a89ca255f393b89f51fec771e343dab14c136b"
+          }
+        },
+        {
+          "client_id": "598699684568-623og9ue0nmjknnadsbvjna1km92b4tj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGHATD68OT68WlnUINI3J0rlUt0DQKlhg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "598699684568-623og9ue0nmjknnadsbvjna1km92b4tj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "598699684568-3gopc030jnnri3n684r4jt0ofa7jf5ql.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.leonel.cori"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,93 @@
+{
+  "@@last_modified": "2019-01-09T12:01:28.417650",
+  "appName": "Cori",
+  "@appName": {
+    "description": "Title for the ecommerce application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gLogin": "Connectez-vous avec Google",
+  "@gLogin": {
+    "description": "google login",
+    "type": "text",
+    "placeholders": {}
+  },
+  "fLogin": "Connectez-vous avec Facebook",
+  "@fLogin": {
+    "description": "facebook login",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "Chargement...",
+  "@loading": {
+    "description": "loading",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterEmail": "S'il vous plaît entrer email",
+  "@enterEmail": {
+    "description": "Email Required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterPassword": "Veuillez entrer le mot de passe",
+  "@enterPassword": {
+    "description": "Password Required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email Required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "Mot de passe",
+  "@password": {
+    "description": "Password Required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "forgotPassword": "Mot de passe oublié ?",
+  "@forgotPassword": {
+    "description": "When User Forgets their Password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signIn": "Se connecter",
+  "@signIn": {
+    "description": "Sign In User with email and password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createAccount": "Créer un nouveau compte",
+  "@createAccount": {
+    "description": "Create new Account",
+    "type": "text",
+    "placeholders": {}
+  },
+  "register": "registre",
+  "@register": {
+    "description": "Register",
+    "type": "text",
+    "placeholders": {}
+  },
+  "already": "Vous avez déjà un compte ?",
+  "@already": {
+    "description": "When the user already has an account",
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "S'identifier",
+  "@login": {
+    "description": "Go to Log In Screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorOccured": "Une erreur est survenue. Réessayez plus tard s'il vous plaît",
+  "@errorOccured": {
+    "description": "Go to Log In Screen",
+    "type": "text",
+    "placeholders": {}
+  }
+}
