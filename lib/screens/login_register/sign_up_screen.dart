@@ -5,10 +5,10 @@
  * 
  */
 import 'dart:async';
-import 'dart:io';
+
 import 'package:cori/components/input_field.dart';
 import 'package:cori/locale/locale.dart';
-import 'package:cori/screens/home/home_non_admin.dart';
+
 import 'package:cori/theme/style.dart';
 import 'package:cori/utils/authentication.dart';
 import 'package:cori/utils/config.dart';

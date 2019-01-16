@@ -1,7 +1,7 @@
 import 'package:cori/locale/locale.dart';
 import 'package:cori/screens/login_register/login_screen.dart';
 import 'package:cori/screens/login_register/sign_up_screen.dart';
-import 'package:cori/screens/profile/user_information.dart';
+
 import "package:flutter/material.dart";
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -12,7 +12,7 @@ class Routes {
   FirebaseAnalytics analytics = FirebaseAnalytics();
   var routes = <String, WidgetBuilder>{
     "/SignUp": (BuildContext context) => SignUpScreen(),
-    "/UserInformation": (BuildContext context) => UserInformation(userId),
+    // "/UserInformation": (BuildContext context) => UserInformation(userId),
   };
 
   Routes() {

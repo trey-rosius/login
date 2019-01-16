@@ -32,6 +32,7 @@ lib/screens/categories/
 lib/screens/product/
 lib/screens/store/
 lib/screens/profile/
+lib/screens/home/
 
 
 # Android related

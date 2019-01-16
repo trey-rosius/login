@@ -1,6 +1,4 @@
 import 'package:cori/locale/locale.dart';
-import 'package:cori/locale/locale.dart';
-import 'package:cori/screens/profile/user_information.dart';
 
 import 'package:cori/utils/authentication.dart';
 import 'package:cori/utils/config.dart';
