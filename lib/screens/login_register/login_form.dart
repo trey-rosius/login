@@ -1,4 +1,6 @@
 import 'package:cori/locale/locale.dart';
+import 'package:cori/screens/login_register/password_reset.dart';
+import 'package:cori/screens/profile/user_information.dart';
 
 import 'package:cori/utils/authentication.dart';
 import 'package:cori/utils/config.dart';
@@ -100,13 +102,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
             });
 
             showInSnackBar("Successful");
-            /*
+
             Navigator.push(
                 context,
                 new MaterialPageRoute(
                   builder: (context) => UserInformation(user.uid),
                 ));
-                */
 
             /*
             Navigator.push(
@@ -254,8 +255,11 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                       children: <Widget>[
                         FlatButton(
                           onPressed: () {
-                            showInSnackBar(
-                                AppLocalizations.of(context).forgotPassword);
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                  builder: (context) => PasswordReset(),
+                                ));
                           },
                           child: Text(
                             AppLocalizations.of(context).forgotPassword,

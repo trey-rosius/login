@@ -382,7 +382,7 @@ class AppLocalizations {
 
   String get createProduct {
     return Intl.message(
-      'Create Proudct',
+      'Create Product',
       name: 'createProduct',
       desc: 'Create Product',
     );
@@ -399,6 +399,31 @@ class AppLocalizations {
   String get invalidEmail {
     return Intl.message("Invalid email address",
         name: 'invalidEmail', desc: 'Invalid Email');
+  }
+
+  String get productName {
+    return Intl.message("Product Name",
+        name: 'productName', desc: 'Product Name');
+  }
+
+  String get productDesc {
+    return Intl.message("Product Description",
+        name: 'productDesc', desc: 'Product Description');
+  }
+
+  String get productPrice {
+    return Intl.message("Product Price(Frs)",
+        name: 'productPrice', desc: 'Product Price');
+  }
+
+  String get productKeywords {
+    return Intl.message("Product KeyWords",
+        name: 'productKeywords', desc: 'Product Keywords');
+  }
+
+  String get selectCat {
+    return Intl.message("Select Product Category",
+        name: 'selectCat', desc: 'Select Product Category');
   }
 }
 

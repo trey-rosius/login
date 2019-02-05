@@ -1,6 +1,7 @@
 import 'package:cori/locale/locale.dart';
 import 'package:cori/screens/login_register/login_screen.dart';
 import 'package:cori/screens/login_register/sign_up_screen.dart';
+import 'package:cori/screens/product/create_product.dart';
 
 import "package:flutter/material.dart";
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -29,13 +30,14 @@ class Routes {
         const Locale('en', ''),
         const Locale('fr', ''),
       ],
-      title: 'Flutter Demo',
+      title: 'Cori',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           accentColor: Color(0xFFFE5099),
           primaryColor: Colors.redAccent,
           primaryColorDark: Colors.redAccent),
       home: LoginScreen(),
+     // home: CreateProduct(),
       routes: routes,
     ));
   }

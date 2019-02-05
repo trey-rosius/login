@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cori/locale/locale.dart';
+import 'package:cori/screens/product/create_product.dart';
+import 'package:cori/screens/profile/user_information.dart';
 
 import 'package:cori/utils/authentication.dart';
 import 'package:cori/utils/config.dart';
@@ -83,14 +85,20 @@ class GoogleSignInButtonState extends State<GoogleSignInButton> {
             });
             print("User Successfully registered");
 
-            showInSnackBar("Successful");
+            //  showInSnackBar("Successful");
+
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                  builder: (context) => UserInformation(user.uid),
+                ));
 /*
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                builder: (context) => UserInformation(user.uid),
-              ));
-              */
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                  builder: (context) => UserInformation(user.uid),
+                ));
+*/
             /*
             Navigator.push(
                 context,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cori/locale/locale.dart';
 import 'package:cori/screens/categories/categories_scroller.dart';
+import 'package:cori/screens/product/create_product.dart';
 import 'package:cori/utils/config.dart';
 import 'package:pit_multiple_image_picker/pit_multiple_image_picker.dart';
 import 'package:cori/screens/home/admin_drawer.dart';
@@ -11,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
+  HomeScreen({this.userId});
+  final String userId;
   @override
   HomeScreenState createState() {
     return new HomeScreenState();
@@ -114,15 +117,20 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _pickImages(5);
+         // _pickImages(5);
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => CreateProduct(),
+              ));
         },
         backgroundColor: Colors.redAccent,
         child: Icon(
-          Icons.account_circle,
+          Icons.add,
           color: Colors.white,
         ),
       ),
-      drawer: Drawer(elevation: 16.0, child: AdminDrawer(size: size)),
+      drawer: Drawer(elevation: 16.0, child: AdminDrawer(size: size,userId:widget.userId)),
       body: CustomScrollView(
         slivers: <Widget>[
           /*

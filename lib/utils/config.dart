@@ -40,6 +40,7 @@ class Config {
    * Categories and Sub Categories Constants
    */
   static final String CORI_CATEGORIES = "categories";
+  static final String CORI_PARENT_CATEGORIES_ID = "parent_category_id";
   static final String CORI_CATEGORIES_ID = "catId";
   static final String CORI_SUB_CATEGORIES_ID = "subCatId";
   static final String CORI_SUB_CATEGORIES = "subCategories";

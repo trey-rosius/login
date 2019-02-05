@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cori/api/firebase_api.dart';
 import 'package:cori/api/general_bloc.dart';
@@ -5,14 +6,17 @@ import 'package:cori/api/general_provider.dart';
 import 'package:cori/locale/locale.dart';
 import 'package:cori/screens/categories/categories_page.dart';
 import 'package:cori/screens/profile/profile_screen.dart';
-import 'package:cori/screens/profile/user_information.dart';
+
+import 'package:cori/screens/store/create_store.dart';
 import 'package:cori/utils/config.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class AdminDrawer extends StatefulWidget {
-  AdminDrawer({Key key, this.size}) : super(key: key);
+  AdminDrawer({Key key, this.size,this.userId}) : super(key: key);
   final Size size;
+  final String userId;
+
 
   @override
   AdminDrawerState createState() {
@@ -21,19 +25,13 @@ class AdminDrawer extends StatefulWidget {
 }
 
 class AdminDrawerState extends State<AdminDrawer> {
-  String userId;
-  _getUserId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    userId = prefs.getString(Config.CORI_USER_ID);
-    print("user" + userId);
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getUserId();
+  //  _getUserId();
   }
 
   @override
@@ -43,8 +41,124 @@ class AdminDrawerState extends State<AdminDrawer> {
       child: Column(
         children: <Widget>[
           Container(
-            color: Colors.white,
-            height: widget.size.height / 4,
+           // color: Colors.white,
+            padding: EdgeInsets.only(top: 50.0,left: 10.0),
+            child:StreamBuilder<DocumentSnapshot>(
+              stream: Firestore.instance
+                  .collection(Config.CORI_USERS)
+                  .document(widget.userId)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  print(snapshot.data.toString());
+                  return Container(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15.0),
+                                child: snapshot.data[
+                                Config.CORI_PROFILE_PIC_URL] !=
+                                    null
+                                    ? CachedNetworkImage(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  fit: BoxFit.cover,
+                                  imageUrl: snapshot
+                                      .data[Config.CORI_PROFILE_PIC_URL],
+                                  placeholder:
+                                  new CircularProgressIndicator(),
+                                  errorWidget: new Icon(Icons.error),
+                                )
+                                    : CircleAvatar(
+                                  backgroundColor: Colors.redAccent,
+                                  radius: 50.0,
+                                  child: Icon(
+                                    Icons.account_circle,
+                                    color: Colors.white,
+                                    size: 70.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Text(
+                                      snapshot.data[Config.CORI_FIRST_NAME] +
+                                          " " +
+                                          snapshot.data[Config.CORI_LAST_NAME],
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        fontFamily: 'Montserrat-Regular',
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Text(
+                                      snapshot.data[Config.CORI_EMAIL],
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.white,
+                                        fontFamily: 'Montserrat-Regular',
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Text(
+                                      snapshot.data[Config.CORI_PHONE_NUMBER],
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.white,
+                                        fontFamily: 'Montserrat-Regular',
+                                      ),
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (!snapshot.hasData) {
+                  return CircleAvatar(
+                    backgroundColor: Colors.redAccent,
+                    radius: 50.0,
+                    child: Icon(
+                      Icons.account_circle,
+                      color: Colors.white,
+                      size: 70.0,
+                    ),
+                  );
+                } else {
+                  return CircleAvatar(
+                    backgroundColor: Colors.redAccent,
+                    radius: 50.0,
+                    child: Icon(
+                      Icons.account_circle,
+                      color: Colors.white,
+                      size: 70.0,
+                    ),
+                  );
+                }
+              },
+            )
           ),
           ListTile(
             onTap: () {
@@ -73,7 +187,7 @@ class AdminDrawerState extends State<AdminDrawer> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                    builder: (context) => new ProfileScreen(userId: userId),
+                    builder: (context) => new ProfileScreen(userId: widget.userId),
                   ));
               // Navigator.of(context).pushNamed('/Genre');
             },
@@ -102,7 +216,7 @@ class AdminDrawerState extends State<AdminDrawer> {
                     new MaterialPageRoute(
                       builder: (context) => GeneralProvider(
                             itemBloc: GeneralBloc(Api()),
-                            child: CategoryPage(),
+                            child: CategoryPage(widget.userId),
                           ),
                     ));
               },
@@ -118,6 +232,7 @@ class AdminDrawerState extends State<AdminDrawer> {
               trailing: StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance
                       .collection(Config.CORI_CATEGORIES)
+                      .where(Config.CORI_PARENT_CATEGORIES_ID, isNull: true)
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -154,10 +269,7 @@ class AdminDrawerState extends State<AdminDrawer> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                      builder: (context) => GeneralProvider(
-                            itemBloc: GeneralBloc(Api()),
-                            child: CategoryPage(),
-                          ),
+                      builder: (context) => CreateStore(widget.userId),
                     ));
               },
               leading: Icon(

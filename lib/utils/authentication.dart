@@ -24,6 +24,12 @@ class UserAuth {
     return statusMsg;
   }
 
+  Future<bool> resetUserPassword(String email) async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    await firebaseAuth.sendPasswordResetEmail(email: email);
+    return true;
+  }
+
   //To verify new User
   Future<String> verifyUser(UserData userData) async {
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
