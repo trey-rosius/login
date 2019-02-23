@@ -79,8 +79,8 @@ class CategoriesScrollerItemState extends State<CategoriesScrollerItem> {
                           height: 80.0,
                           width: 80.0,
                           imageUrl: document[Config.CORI_CATEGORY_IMAGE],
-                          placeholder: new CircularProgressIndicator(),
-                          errorWidget: new Icon(Icons.error),
+                          placeholder:(context,url)=> new CircularProgressIndicator(),
+                          errorWidget:(context,url,ex)=> new Icon(Icons.error),
                         ),
                       ),
                       Flexible(

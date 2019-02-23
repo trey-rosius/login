@@ -57,9 +57,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         fit: BoxFit.cover,
                                         imageUrl: snapshot
                                             .data[Config.CORI_PROFILE_PIC_URL],
-                                        placeholder:
-                                            new CircularProgressIndicator(),
-                                        errorWidget: new Icon(Icons.error),
+                                        placeholder:(context,url)=>
+                                          new CircularProgressIndicator(),
+
+
+                                        errorWidget: (context,url,ex)=>
+                                         new Icon(Icons.error)
+
                                       )
                                     : CircleAvatar(
                                         backgroundColor: Colors.redAccent,

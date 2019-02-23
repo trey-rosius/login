@@ -11,7 +11,7 @@ class CategoriesScroller extends StatelessWidget {
   Widget build(BuildContext context) {
     final categoriesItem = GeneralProvider.of(context);
     return StreamBuilder(
-      stream: categoriesItem.api.fetchAllCategories(),
+      stream: categoriesItem.api.fetchMainCategories(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return SliverToBoxAdapter(child: LoadingScreen());

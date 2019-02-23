@@ -53,34 +53,24 @@ final GoogleSignIn _googleSignIn = new GoogleSignIn();
 
 Future<FirebaseUser> signInWithGoogle() async {
   // Attempt to get the currently authenticated user
-  GoogleSignInAccount currentUser = _googleSignIn.currentUser;
-  /*
-  if (currentUser == null) {
-    // Attempt to sign in without user interaction
-    currentUser = await _googleSignIn.signInSilently();
-    //  print(currentUser.email);
-    //   _saveEmail(currentUser.email);
-  }
-  */
-  if (currentUser == null) {
-    // Force the user to interactively sign in
-    currentUser = await _googleSignIn.signIn();
-    //   print(currentUser.email);
-    //   _saveEmail(currentUser.email);
-  }
-
-  final GoogleSignInAuthentication auth = await currentUser.authentication;
-
-  // Authenticate with firebase
-  final FirebaseUser user = await _auth.signInWithGoogle(
-    idToken: auth.idToken,
-    accessToken: auth.accessToken,
+  final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+  final GoogleSignInAuthentication googleAuth =
+  await googleUser.authentication;
+  final AuthCredential credential = GoogleAuthProvider.getCredential(
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
   );
-
-  assert(user != null);
+  final FirebaseUser user = await _auth.signInWithCredential(credential);
+  assert(user.email != null);
+  assert(user.displayName != null);
   assert(!user.isAnonymous);
+  assert(await user.getIdToken() != null);
 
-  return user;
+  final FirebaseUser currentUser = await _auth.currentUser();
+  assert(user.uid == currentUser.uid);
+
+  return  user;
+
 }
 
 Future<Null> signOutWithGoogle() async {

@@ -43,7 +43,7 @@ class CategoriesItemState extends State<CategoriesItem> {
 
     /*24 is for notification bar on Android*/
     final double itemHeight = (size.height - kToolbarHeight - 24) / 3;
-    final double itemWidth = size.width / 2;
+    final double itemWidth = size.width / 2.2;
     return GridView.builder(
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: (itemWidth / itemHeight), crossAxisCount: 2),
@@ -86,7 +86,7 @@ class CategoriesItemState extends State<CategoriesItem> {
                         child: CachedNetworkImage(
                           fit: BoxFit.cover,
                           imageUrl: document[Config.CORI_CATEGORY_IMAGE],
-                          placeholder: SpinKitWave(
+                          placeholder:(context,url)=> SpinKitWave(
                             itemBuilder: (_, int index) {
                               return DecoratedBox(
                                 decoration: BoxDecoration(
@@ -95,7 +95,7 @@ class CategoriesItemState extends State<CategoriesItem> {
                               );
                             },
                           ),
-                          errorWidget: new Icon(Icons.error),
+                          errorWidget:(context,url,ex)=> new Icon(Icons.error),
                         ),
                       ),
                     ),

@@ -9,7 +9,15 @@ class GeneralBloc {
   Stream<QuerySnapshot> userInfo = Stream.empty();
   Stream<QuerySnapshot> get getUserInfo => userInfo;
 
+  Stream<QuerySnapshot> productItems = Stream.empty();
+  Stream<QuerySnapshot> get getProductItems => productItems;
+
+  Stream<QuerySnapshot> storeItems = Stream.empty();
+  Stream<QuerySnapshot> get getStoreItems => storeItems;
+
   GeneralBloc(this.api) {
     userInfo = api.fetchAllCategories();
+    productItems = api.fetchAllProducts();
+    storeItems = api.fetchAllStores();
   }
 }

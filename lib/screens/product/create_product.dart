@@ -1,16 +1,15 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cori/locale/locale.dart';
-
 import 'package:cori/screens/categories/error_screen.dart';
 import 'package:cori/screens/categories/loading_screen.dart';
-
-import 'package:cori/screens/product/image_list.dart';
-
+import 'package:cori/screens/product/uploading_images_screen.dart';
 import 'package:cori/utils/config.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:pit_multiple_image_picker/pit_multiple_image_picker.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 
 class CreateProduct extends StatefulWidget {
   @override
@@ -19,7 +18,7 @@ class CreateProduct extends StatefulWidget {
 
 class _CreateProductState extends State<CreateProduct> {
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
-
+   bool uploading = false;
   final _formKey = GlobalKey<FormState>();
   bool autovalidate = false;
   final productNameController = TextEditingController();
@@ -30,53 +29,72 @@ class _CreateProductState extends State<CreateProduct> {
   List<String> items;
   List<File> files;
   String categoryId;
-  Future<List<File>> _imageFile;
+
   final productPriceController = TextEditingController();
-  void _pickImages(int maxImages) {
-    setState(() {
-      _imageFile = PitMultipleImagePicker.pickImages(maxImages: maxImages);
-    });
+  void showInSnackBar(String value) {
+   _scaffoldkey.currentState.showSnackBar(new SnackBar(
+      content: new Text(value),
+      backgroundColor: Colors.redAccent,
+    ));
+  }
+  uploadProductDetails() {
+    FormState form = _formKey.currentState;
+    if (!form.validate()) {
+      autovalidate = true;
+      showInSnackBar(AppLocalizations
+          .of(context)
+          .fixErrors);
+    } else {
+      setState(() {
+        uploading = true;
+      });
+
+      var reference = Firestore.instance.collection(Config.CORI_PRODUCTS);
+
+      reference.add({
+        Config.CORI_PRODUCT_NAME: productNameController.text,
+        Config.CORI_PRODUCT_PRICE: productPriceController.text,
+        Config.CORI_PRODUCT_DESC: productDescriptionController.text,
+        Config.CORI_PRODUCT_CATEGORY: categoryId,
+        Config.CORI_PRODUCT_KEYWORDS: productKeywordsController.text,
+
+        "timestamp": new DateTime.now().toString(),
+      }).then((DocumentReference doc) {
+        String docId = doc.documentID;
+        reference
+            .document(docId)
+            .updateData({Config.CORI_PRODUCT_ID: docId});
+
+        productNameController.clear();
+        productPriceController.clear();
+        productDescriptionController.clear();
+        categoryController.clear();
+        categoryId = "";
+        productKeywordsController.clear();
+        setState(() {
+          uploading = false;
+
+        });
+
+
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UploadImagesScreen(
+                productId: docId,
+              )),
+        );
+
+      });
+    }
   }
 
-  Widget _previewImage() {
-    return FutureBuilder<List<File>>(
-        future: _imageFile,
-        builder: (BuildContext context, AsyncSnapshot<List<File>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.data != null) {
-            files = snapshot.data;
-            return (files.length == 1)
-                ? //for pickImage case (1 image)
-                files[0] == null
-                    ? SliverToBoxAdapter(child: Container())
-                    : SliverToBoxAdapter(
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15.0),
-                            child: Image.file(
-                              files[0],
-                            )))
-                : ImageList(
-                    files: files,
-                  );
-          } else if (snapshot.error != null) {
-            return SliverToBoxAdapter(
-                child: Text(
-              'Error picking image.',
-              textAlign: TextAlign.center,
-            ));
-          } else {
-            return SliverToBoxAdapter(
-                child: Text(
-              'You have not yet picked an image.',
-              textAlign: TextAlign.center,
-            ));
-          }
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       key: _scaffoldkey,
       appBar: AppBar(
@@ -95,17 +113,7 @@ class _CreateProductState extends State<CreateProduct> {
             fontFamily: "Montserrat-Regular",
           ),
         ),
-        actions: <Widget>[
-          InkWell(
-            onTap: () {
-              _pickImages(5);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.add_a_photo),
-            ),
-          )
-        ],
+
       ),
       drawer: Drawer(
           child: Stack(children: <Widget>[
@@ -158,7 +166,12 @@ class _CreateProductState extends State<CreateProduct> {
                                           EdgeInsets.only(top: 5.0, left: 5.0),
                                       child: GestureDetector(
                                         onTap: () {
-                                          print("presses");
+                                          categoryController.text =
+                                          document[Config
+                                              .CORI_CATEGORY_NAME];
+                                          categoryId = document[
+                                          Config.CORI_CATEGORIES_ID];
+                                          Navigator.of(context).pop();
                                         },
                                         child: Container(
                                           padding:
@@ -370,18 +383,42 @@ class _CreateProductState extends State<CreateProduct> {
               ],
             ),
           ),
-          SliverToBoxAdapter(
-            child: Text(
-              "Select Product Images",
-              style: new TextStyle(
-                fontSize: 20.0,
-                color: Colors.white,
-                fontFamily: "Montserrat-Regular",
-              ),
-            ),
-          ),
-          _previewImage()
+
+
         ],
+      ),
+      bottomNavigationBar: Container(
+        width: width,
+        height: height / 8,
+        color: Colors.redAccent,
+        child: uploading == true
+            ? SpinKitWave(
+          itemBuilder: (_, int index) {
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+            );
+          },
+        )
+            : MaterialButton(
+          onPressed: () {
+            uploadProductDetails();
+
+          },
+          color: Colors.redAccent,
+          child: Padding(
+            padding: EdgeInsets.all(24.0),
+            child: Text(
+
+                "Save and Continue",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Montserrat-Regular',
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600)),
+          ),
+        ),
       ),
     );
   }

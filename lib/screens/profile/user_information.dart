@@ -321,8 +321,8 @@ class UserInformationState extends State<UserInformation> {
                               height: 110.0,
                               fit: BoxFit.cover,
                               imageUrl: profilePic,
-                              placeholder: new CircularProgressIndicator(),
-                              errorWidget: new Icon(Icons.error),
+                              placeholder: (context,url)=>new CircularProgressIndicator(),
+                              errorWidget:(context,url,ex)=> new Icon(Icons.error),
                             )
                           : CircleAvatar(
                               backgroundColor: Colors.redAccent,

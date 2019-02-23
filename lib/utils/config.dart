@@ -49,7 +49,22 @@ class Config {
   static final String CORI_CATEGORY_DESCRIPTION = "catDesc";
   static final String CORI_CATEGORY_IMAGE = "catImage";
 
-/**
+  /**
+   * Upload Products
+   *
+   */
+  static final String CORI_PRODUCTS="products";
+  static final String CORI_PRODUCT_ID="productId";
+  static final String CORI_PRODUCT_PRICE="productPrice";
+  static final String CORI_PRODUCT_IMAGES="productImages";
+  static final String CORI_PRODUCT_MAIN_IMAGE="productMainImage";
+  static final String CORI_PRODUCT_NAME="productName";
+  static final String CORI_PRODUCT_CATEGORY="productCategory";
+  static final String CORI_PRODUCT_DESC="productDesc";
+  static final String CORI_PRODUCT_KEYWORDS="productKeywords";
+
+
+  /**
  * Firebase Configuration Parameters
  * 
  */

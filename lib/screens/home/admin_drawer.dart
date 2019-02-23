@@ -8,6 +8,7 @@ import 'package:cori/screens/categories/categories_page.dart';
 import 'package:cori/screens/profile/profile_screen.dart';
 
 import 'package:cori/screens/store/create_store.dart';
+import 'package:cori/screens/store/stores.dart';
 import 'package:cori/utils/config.dart';
 import 'package:flutter/material.dart';
 
@@ -70,9 +71,9 @@ class AdminDrawerState extends State<AdminDrawer> {
                                   fit: BoxFit.cover,
                                   imageUrl: snapshot
                                       .data[Config.CORI_PROFILE_PIC_URL],
-                                  placeholder:
+                                  placeholder:(context,url)=>
                                   new CircularProgressIndicator(),
-                                  errorWidget: new Icon(Icons.error),
+                                  errorWidget:(context,url,ex)=> new Icon(Icons.error),
                                 )
                                     : CircleAvatar(
                                   backgroundColor: Colors.redAccent,
@@ -269,8 +270,10 @@ class AdminDrawerState extends State<AdminDrawer> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                      builder: (context) => CreateStore(widget.userId),
+                      builder: (context) =>  Stores(),
+
                     ));
+
               },
               leading: Icon(
                 Icons.store,

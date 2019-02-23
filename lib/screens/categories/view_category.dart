@@ -101,8 +101,8 @@ class ViewCategory extends StatelessWidget {
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
                     imageUrl: catImage,
-                    placeholder: new CircularProgressIndicator(),
-                    errorWidget: new Icon(Icons.error),
+                    placeholder:(context,url)=> new CircularProgressIndicator(),
+                    errorWidget:(context,url,ex)=> new Icon(Icons.error),
                   ),
                 ),
               ),

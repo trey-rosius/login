@@ -425,6 +425,10 @@ class AppLocalizations {
     return Intl.message("Select Product Category",
         name: 'selectCat', desc: 'Select Product Category');
   }
+  String get uploadProductImages {
+    return Intl.message("Upload Product Images",
+        name: 'uploadProductImages', desc: 'Upload Product Images');
+  }
 }
 
 // This file was generated in two steps, using the Dart in tl tools. With the

@@ -9,6 +9,13 @@ class Api {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> fetchAllProducts() {
+    return Firestore.instance.collection(Config.CORI_PRODUCTS).snapshots();
+  }
+  Stream<QuerySnapshot> fetchAllStores() {
+    return Firestore.instance.collection(Config.CORI_STORE).snapshots();
+  }
+
   Stream<QuerySnapshot> fetchAllCategories() {
     return Firestore.instance.collection(Config.CORI_CATEGORIES).snapshots();
   }

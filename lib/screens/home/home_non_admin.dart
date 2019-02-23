@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cori/api/general_provider.dart';
+
 import 'package:cori/locale/locale.dart';
 import 'package:cori/screens/categories/categories_scroller.dart';
+import 'package:cori/screens/categories/error_screen.dart';
+import 'package:cori/screens/categories/loading_screen.dart';
 import 'package:cori/screens/product/create_product.dart';
-import 'package:cori/utils/config.dart';
-import 'package:pit_multiple_image_picker/pit_multiple_image_picker.dart';
+import 'package:cori/screens/product/product_items.dart';
+
 import 'package:cori/screens/home/admin_drawer.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +26,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  Future<List<File>> _imageFile;
+  bool isLargeScreen;
 
   VoidCallback listener;
+
   /*
   String userId;
 
@@ -35,12 +41,6 @@ class HomeScreenState extends State<HomeScreen> {
   }
   */
 
-  void _pickImages(int maxImages) {
-    setState(() {
-      _imageFile = PitMultipleImagePicker.pickImages(maxImages: maxImages);
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -50,54 +50,25 @@ class HomeScreenState extends State<HomeScreen> {
     // _getUserId();
   }
 
-  Widget _previewImage() {
-    return FutureBuilder<List<File>>(
-        future: _imageFile,
-        builder: (BuildContext context, AsyncSnapshot<List<File>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.data != null) {
-            List<File> files = snapshot.data;
-            return (files.length == 1)
-                ? //for pickImage case (1 image)
-                files[0] == null
-                    ? SliverToBoxAdapter(child: Container())
-                    : new SliverToBoxAdapter(
-                        child: Image.file(files[0]),
-                      )
-                : SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return Image.file(files[index]);
-                    },
-                    childCount: files.length,
-                  ));
-          } else if (snapshot.error != null) {
-            return SliverToBoxAdapter(
-              child: const Text(
-                'Error picking image.',
-                textAlign: TextAlign.center,
-              ),
-            );
-          } else {
-            return SliverToBoxAdapter(
-              child: const Text(
-                'You have not yet picked an image.',
-                textAlign: TextAlign.center,
-              ),
-            );
-          }
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
+
+    /*24 is for notification bar on Android*/
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 3;
+    final double itemWidth = size.width / 2.7;
+    if (size.width > 400.0) {
+      isLargeScreen = true;
+    } else {
+      isLargeScreen = false;
+    }
+    final generalItem = GeneralProvider.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
         centerTitle: true,
         title: Text(
-          "Shopaholic",
+          "Cori",
           style: TextStyle(
               fontFamily: "Montserrat-Regular",
               fontSize: 22.0,
@@ -117,12 +88,18 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateProduct()),
+          );
+          /*
          // _pickImages(5);
           Navigator.push(
               context,
               new MaterialPageRoute(
                 builder: (context) => CreateProduct(),
               ));
+              */
         },
         backgroundColor: Colors.redAccent,
         child: Icon(
@@ -130,7 +107,9 @@ class HomeScreenState extends State<HomeScreen> {
           color: Colors.white,
         ),
       ),
-      drawer: Drawer(elevation: 16.0, child: AdminDrawer(size: size,userId:widget.userId)),
+      drawer: Drawer(
+          elevation: 16.0,
+          child: AdminDrawer(size: size, userId: widget.userId)),
       body: CustomScrollView(
         slivers: <Widget>[
           /*
@@ -224,47 +203,38 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: Image.asset(
-              "assets/images/airmax.jpeg",
-              height: size.height / 3,
-              width: size.width,
-              fit: BoxFit.cover,
+          StreamBuilder(
+              stream: generalItem.api.fetchAllProducts(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return SliverToBoxAdapter(child: LoadingScreen());
+                } else if (snapshot.hasData) {
+                   return SliverGrid(
+                      gridDelegate:
+                          new SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: (itemWidth / itemHeight),
+                        crossAxisCount: 2,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                        final DocumentSnapshot document =
+                            snapshot.data.documents[index];
+                         print(document);
+
+                       return ProductItems(
+                            isLargeScreen: isLargeScreen, document: document,);
+
+
+                      }, childCount: snapshot.data.documents.length));
+                } else {
+                  return SliverToBoxAdapter(
+                      child: ErrorScreen(error: snapshot.error.toString()));
+                }
+              },
             ),
-          )),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Image.asset(
-              "assets/images/vans.jpeg",
-              height: size.height / 3,
-              width: size.width,
-              fit: BoxFit.cover,
-            ),
-          )),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Image.asset(
-              "assets/images/nike.jpeg",
-              height: size.height / 3,
-              width: size.width,
-              fit: BoxFit.cover,
-            ),
-          )),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Image.asset(
-              "assets/images/airforce.jpeg",
-              height: size.height / 3,
-              width: size.width,
-              fit: BoxFit.cover,
-            ),
-          )),
-          _previewImage()
+
+
         ],
       ),
     );
